@@ -28,32 +28,29 @@ int evalStack[MAX_STACK_SIZE];
 int postfixStackTop = -1;
 int evalStackTop = -1;
 int evalResult = 0;
-void postfixPush(char x)
-char postfixPop()
-void evalPush(int x)
-int evalPop()
-void getInfix()
-precedence getToken(char symbol)
-precedence getPriority(char x)
-void charCat(char* c)
-void toPostfix()
-void debug()
-void reset()
-void evaluation()
+
+void postfixPush(char x);
+char postfixPop();
+void evalPush(int x);
+int evalPop();
+void getInfix();
+precedence getToken(char symbol);
+precedence getPriority(char x);
+void charCat(char* c);
+void toPostfix();
+void debug();
+void reset();
+void evaluation();
+
 int main()
 {
 	char command;
 	do{
-		printf("----------------------------------------------------------------
-\n");
-		printf(" Infix to Postfix, then Evaluation
-\n");
-		printf("----------------------------------------------------------------
-\n");
-		printf(" Infix=i, Postfix=p, Eval=e, Debug=d, Reset=r,
-Quit=q \n");
-		printf("----------------------------------------------------------------
-\n");
+		printf("----------------------------------------------------------------\n");
+		printf(" Infix to Postfix, then Evaluation\n");
+		printf("----------------------------------------------------------------\n");
+		printf(" Infix=i, Postfix=p, Eval=e, Debug=d, Reset=r, Quit=q \n");
+		printf("----------------------------------------------------------------\n");
 		printf("Command = ");
 		scanf(" %c", &command);
 		switch(command) {
@@ -75,11 +72,12 @@ Quit=q \n");
 			case 'q': case 'Q':
 				break;
 			default:
-				printf("\n >>>>> Concentration!! <<<<<
-\n");
+				printf("\n >>>>> Concentration!! <<<<<\n");
 				break;
 		}
-	}while(command != 'q' && command != 'Q');
+	}
+
+	while(command != 'q' && command != 'Q');
 	return 1;
 }
 void postfixPush(char x)
@@ -158,7 +156,7 @@ void toPostfix()
 	{
 		x = *exp;
 		charCat(&x);
-}
+		}
 else if(getPriority(*exp) == lparen) {
 	postfixPush(*exp);
 }
@@ -169,7 +167,7 @@ else if(getPriority(*exp) == rparen)
 
 	}
 }
-else
+else if(getPriority(*exp) == times) //else에 if 추가, 괄호식 추가
 {
 	while(getPriority(postfixStack[postfixStackTop]) >=
 			getPriority(*exp))
@@ -197,7 +195,7 @@ void debug()
 	printf("postfixStack : ");
 	for(int i = 0; i < MAX_STACK_SIZE; i++)
 		printf("%c ", postfixStack[i]);
-	printf("\n");
+		printf("\n");
 }
 void reset()
 {
@@ -236,3 +234,4 @@ void evaluation()
 	}
 	evalResult = evalPop();
 }
+
