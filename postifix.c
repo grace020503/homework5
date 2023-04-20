@@ -21,25 +21,25 @@ typedef enum{
 	operand = 1 /* 피연산자 */
 } precedence;
 
-char infixExp[MAX_EXPRESSION_SIZE];
-char postfixExp[MAX_EXPRESSION_SIZE];
-char postfixStack[MAX_STACK_SIZE];
-int evalStack[MAX_STACK_SIZE];
-int postfixStackTop = -1;
-int evalStackTop = -1;
-int evalResult = 0;
+char infixExp[MAX_EXPRESSION_SIZE]; // 중위 표기식
+char postfixExp[MAX_EXPRESSION_SIZE]; // 후위 표기식
+char postfixStack[MAX_STACK_SIZE]; // 후기표기식를 만들기 위한 스택
+int evalStack[MAX_STACK_SIZE]; // 후기표기식를 계산하기 위한 스택
+int postfixStackTop = -1; // postfix 스택의 top
+int evalStackTop = -1; // eval 스택의 top
+int evalResult = 0; //결과
 
-void postfixPush(char x);
-char postfixPop();
-void evalPush(int x);
-int evalPop();
-void getInfix();
-precedence getToken(char symbol);
-precedence getPriority(char x);
-void charCat(char* c);
-void toPostfix();
-void debug();
-void reset();
+void postfixPush(char x); //후위 표기식에 push 하는 함수
+char postfixPop(); // 후위 표기식에 pop 하는 함수
+void evalPush(int x); // eval 스택 push
+int evalPop(); // eval 스택 pop
+void getInfix(); // 중위 표기식 입력
+precedence getToken(char symbol); // 우선순위 반환
+precedence getPriority(char x); // 연산자 우선순위 반환환
+void charCat(char* c); // 후위표기식에 문자 추가 함수
+void toPostfix(); // 중위표기실을 후기표기식으로 전환
+void debug(); // 중간 결과 출력 함수
+void reset(); // 스택 초기화 함수
 void evaluation();
 
 int main()
@@ -54,22 +54,22 @@ int main()
 		printf("Command = ");
 		scanf(" %c", &command);
 		switch(command) {
-			case 'i': case 'I':
+			case 'i': case 'I': // i 입력시 getinfix 함수 실행
 				getInfix();
 				break;
-			case 'p': case 'P':
+			case 'p': case 'P': // p 입력시 toPostfix 함수 실행
 				toPostfix();
 				break;
-			case 'e': case 'E':
+			case 'e': case 'E': // e 입력시 evaluation 함수 실행
 				evaluation();
 				break;
-			case 'd': case 'D':
+			case 'd': case 'D': // d 입력시 debug 함수 실행
 				debug();
 				break;
-			case 'r': case 'R':
+			case 'r': case 'R': // r 입력시 reset 함수 실행
 				reset();
 				break;
-			case 'q': case 'Q':
+			case 'q': case 'Q': // q 입력시 나가기
 				break;
 			default:
 				printf("\n >>>>> Concentration!! <<<<<\n");
@@ -82,19 +82,19 @@ int main()
 }
 void postfixPush(char x)
 {
-	postfixStack[++postfixStackTop] = x;
+	postfixStack[++postfixStackTop] = x; //스택에 값을 추가한 후 postfixstacktop을 1 증가시켜 다음에 push 할 위치 설정
 }
-char postfixPop()
+char postfixPop() // 후위 표기식 처리를 위해 스택을 pop
 {
 	char x;
-	if(postfixStackTop == -1)
-		return '\0';
+	if(postfixStackTop == -1) // 스택이 빈 경우
+		return '\0'; // null 반환
 	else {
-		x = postfixStack[postfixStackTop--];
+		x = postfixStack[postfixStackTop--]; // postfixStackTop의 값을 반환한 후, postfixStackTop을 1 감소시켜 다음 pop할 위치 설정
 	}
-	return x;
+	return x; // pop 값 반환
 }
-void evalPush(int x)
+void evalPush(int x) // 후기표기식 처리를 위해 push
 {
 	evalStack[++evalStackTop] = x;
 }
@@ -197,7 +197,7 @@ void debug()
 		printf("%c ", postfixStack[i]);
 		printf("\n");
 }
-void reset()
+void reset() // 프로그램 reset
 {
 	infixExp[0] = '\0';
 	postfixExp[0] = '\0';
@@ -208,7 +208,7 @@ void reset()
 	evalStackTop = -1;
 	evalResult = 0;
 }
-void evaluation()
+void evaluation() // 후기 표기식에 저장된 수식을 평가하고 값을 return
 {
 	int opr1, opr2, i;
 	int length = strlen(postfixExp);
